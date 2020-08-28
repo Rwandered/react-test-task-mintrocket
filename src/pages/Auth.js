@@ -1,20 +1,46 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router";
+import {useInput} from "../hooks/hooks";
+import axios from "axios";
 
 const Auth = () => {
 
-  const [login, setLogin] = useState('')
-  const [pwd, setPwd] = useState('')
+  // const [login, setLogin] = useState('')
+  // const [pwd, setPwd] = useState('')
+  const login = useInput('')
+  const pwd = useInput('')
 
   const history = useHistory()
 
-  const submitAuthHandle = (event) => {
+  const clearValue = () => {
+    login.clear()
+    pwd.clear()
+  }
+
+  const submitAuthHandle = async (event) => {
     event.preventDefault()
-    console.log('login: ', login)
-    console.log('pwd: ', pwd)
-    setLogin('')
-    setPwd('')
-    history.push('/')
+
+    const [login, password] = event.target
+    const authUser = {
+      email: login.value,
+      password: password.value,
+    }
+
+    console.log('authUser: ', authUser)
+
+    //тут по идее в диспаст отправляем данные для отправки запроса
+    // но пока тут выполним
+    const resL = await axios.post('https://reqres.in/api/login', authUser) //create
+    const dataL = await resL.data
+    console.log('dataL: ', dataL)
+
+    if(dataL.token) {
+      // + token записать в localstorage
+      history.push('/')
+    } else {
+    //  error
+    }
+    clearValue()
   }
 
   return (
@@ -26,10 +52,10 @@ const Auth = () => {
             <div className="input-field">
               <input
                 id="login"
-                type="text"
+                type={'email'}
+                name={'login'}
                 className="validate"
-                value={login}
-                onChange={ (event) => setLogin(event.target.value)}
+                {...login.inputValue }
                 required
               />
               <label htmlFor={'login'}>Login</label>
@@ -39,9 +65,9 @@ const Auth = () => {
               <input
                 id="password"
                 type="password"
+                name={'password'}
                 className="validate"
-                value={pwd}
-                onChange={ (event) => setPwd(event.target.value)}
+                {...pwd.inputValue }
                 required/>
               <label htmlFor={'password'}>Password</label>
               <span className="helper-text" data-error="Password is required"/>
