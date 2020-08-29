@@ -1,15 +1,14 @@
-import React, {useState} from "react";
+import React  from "react";
 import {useHistory} from "react-router";
-import {useInput} from "../hooks/hooks";
-import axios from "axios";
+import {useInput} from "../hooks/useInput";
+import {useDispatch} from "react-redux";
+import {fetchAuthToken} from "../redux/actions/actionCreators";
 
 const Auth = () => {
 
-  // const [login, setLogin] = useState('')
-  // const [pwd, setPwd] = useState('')
   const login = useInput('')
   const pwd = useInput('')
-
+  const dispatch = useDispatch()
   const history = useHistory()
 
   const clearValue = () => {
@@ -26,21 +25,15 @@ const Auth = () => {
       password: password.value,
     }
 
-    console.log('authUser: ', authUser)
-
-    //тут по идее в диспаст отправляем данные для отправки запроса
-    // но пока тут выполним
-    const resL = await axios.post('https://reqres.in/api/login', authUser) //create
-    const dataL = await resL.data
-    console.log('dataL: ', dataL)
-
-    if(dataL.token) {
-      // + token записать в localstorage
-      history.push('/')
-    } else {
-    //  error
-    }
-    clearValue()
+    dispatch( fetchAuthToken(authUser) )
+      .then( token => {
+        if(token) {
+          clearValue()
+          history.push('/')
+        } else {
+        //  error
+        }
+      })
   }
 
   return (
@@ -58,7 +51,7 @@ const Auth = () => {
                 {...login.inputValue }
                 required
               />
-              <label htmlFor={'login'}>Login</label>
+              <label htmlFor={'login'}>Login (Email)</label>
               <span className="helper-text" data-error="Login is required"/>
             </div>
             <div className="input-field">

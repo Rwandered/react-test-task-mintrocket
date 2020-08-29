@@ -2,7 +2,6 @@ import {useState} from "react";
 
 export const useInput = (initState) => {
   const [value, setValue] = useState(initState)
-
   const onChange = (event) => {
     setValue(event.target.value.trim())
   }
@@ -15,5 +14,6 @@ export const useInput = (initState) => {
     },
     value,
     clear,
+    setValue,
   }
 }
