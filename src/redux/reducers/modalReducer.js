@@ -4,7 +4,7 @@ const initState = {
   modal: {
     isModal: false,
     content: {
-      title: 'Create new user',
+      title: 'Create user',
       first_name: '',
       last_name: '',
       email: '',
@@ -29,7 +29,14 @@ const modalReducer = (state = initState, {type, payload}) => {
         ...state,
         modal: {
           ...state.modal,
-          isModal: false
+          isModal: false,
+          content: {
+            title: 'Create new user',
+            first_name: '',
+            last_name: '',
+            email: '',
+            isEdit: false,
+          }
         }
       }
     default:

@@ -1,8 +1,8 @@
 import React  from "react";
 import {useHistory} from "react-router";
-import {useInput} from "../hooks/useInput";
+import {useInput} from "../../hooks/useInput";
 import {useDispatch} from "react-redux";
-import {fetchAuthToken} from "../redux/actions/actionCreators";
+import {fetchAuthToken} from "../../redux/actions/actionCreators";
 
 const Auth = () => {
 
@@ -38,7 +38,7 @@ const Auth = () => {
 
   return (
     <div className="row">
-      <div className="col s6 offset-s3">
+      <div className="col s6 offset-s3 auth__wrapper ">
         <h1>Auth</h1>
         <div className="form__wrapper">
           <form onSubmit={submitAuthHandle}>

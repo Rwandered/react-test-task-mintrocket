@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
 import ReactDOM from 'react-dom';
-import {useInput} from "../hooks/useInput";
-import {useModal} from "../hooks/useModal";
-import {postUser, updateUser} from "../redux/actions/actionCreators";
+import {useInput} from "../../hooks/useInput";
+import {useModal} from "../../hooks/useModal";
+import {postUser, updateUser} from "../../redux/actions/actionCreators";
 
 
 
@@ -57,7 +57,7 @@ const ModalWindow = () => {
 
     return ReactDOM.createPortal(
       <div className={'modal__layer'}>
-        <div className={'modal__wrapper col s6 offset-s3 cyan darken-3'}>
+        <div className={'modal__wrapper cyan darken-3'}>
           <div className={'modal__title'}>
             <h2>{ modal.content.title }</h2>
           </div>

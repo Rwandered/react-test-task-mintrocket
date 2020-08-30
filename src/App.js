@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Redirect, Route} from "react-router-dom";
-import Main from "./pages/Main";
-import Auth from "./pages/Auth";
+import Main from "./pages/Main/Main";
+import Auth from "./pages/Auth/Auth";
 import { PrivateRouter } from "./utils/privateRouter";
 import {useDispatch} from "react-redux";
 import {changeAuth} from "./redux/actions/actionCreators";
+import 'materialize-css/dist/js/materialize.min.js'
 import './App.scss';
 
 

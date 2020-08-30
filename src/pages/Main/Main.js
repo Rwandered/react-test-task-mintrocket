@@ -1,8 +1,10 @@
 import React, {useEffect} from "react";
 import {useDispatch} from "react-redux";
-import {fetchUsers, setModal} from "../redux/actions/actionCreators";
-import ModalWindow from "../components/ModalWindow";
-import Table from "../components/Table";
+import {fetchUsers, setModal} from "../../redux/actions/actionCreators";
+import ModalWindow from "../../components/ModalWindow/ModalWindow";
+import Table from "../../components/Table/Table";
+import Search from "../../components/Search/Search";
+import Footer from "../../components/Footer/Footer";
 
 
 const Main = () => {
@@ -30,19 +32,13 @@ const Main = () => {
       >
         Create new user
       </button>
-       <div className="search__wrapper">
-          <div className="input-field">
-            <input id="search" type="text"/>
-            <label htmlFor="search">Search</label>
-          </div>
-          <div className={'input__control'}>
-            <button className={'btn'}>Search</button>
-          </div>
-        </div>
+      <Search/>
         <hr/>
       <div className={'table__body'}>
         <Table/>
       </div>
+      <Footer/>
+      <hr/>
       <ModalWindow/>
     </div>
   )

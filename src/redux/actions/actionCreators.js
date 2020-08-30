@@ -1,4 +1,13 @@
-import {CHANGE_AUTH, CLOSE_MODAL, CREATE_USER, DEL_USER, FETCH_USERS, SET_MODAL, UPDATE_USER} from "./actionType";
+import {
+  CHANGE_AUTH,
+  CLOSE_MODAL,
+  CREATE_USER,
+  DEL_USER,
+  FETCH_USERS, RESET_SEARCH, SET_COUNT_PAGES, SET_CURRENT_PAGE,
+  SET_MODAL, SET_PER_PAGE,
+  SWITCH_SEARCH,
+  UPDATE_USER
+} from "./actionType";
 import axios from "axios";
 
 const setUsers = (users) => {
@@ -29,6 +38,19 @@ const removeUser = (id) => {
   }
 }
 
+export const switchSearch = (searchString) => {
+  return {
+    type: SWITCH_SEARCH,
+    payload: searchString
+  }
+}
+
+export const resetSearch = () => {
+  return {
+    type: RESET_SEARCH
+  }
+}
+
 export const setModal = (modalContent) => {
   return {
     type: SET_MODAL,
@@ -52,10 +74,15 @@ export const changeAuth = (token) => {
 export const fetchUsers = () => {
   return async (dispatch, getState) => {
     try {
-      const res = await axios.get('https://reqres.in/api/users')
+      const { pages } = getState()
+      const res = await axios.get(`https://reqres.in/api/users?page=${pages.page.currentPage}&per_page=${pages.page.perPage}`)
       const { data } = await res.data
+      const result = await res.data
 
-      dispatch( setUsers(data) )
+      dispatch( setUsers({
+        users: data,
+        totalUsers: result.total
+      }))
 
     } catch (e){}
   }
@@ -67,9 +94,8 @@ export const updateUser = (user) => {
       const resU = await axios.put(`https://reqres.in/api/users/${user.id}`, user)
       await resU.data
       const { users } = getState()
-      const needUserIndex = users.users.findIndex((usr) => usr.id === user.id)
-
-      const newUsers = users.users.map( (usr, index) => {
+      const needUserIndex = users.users.users.findIndex((usr) => usr.id === user.id)
+      const newUsers = users.users.users.map( (usr, index) => {
          if(index === needUserIndex) {
            return user
          } else {
@@ -124,6 +150,7 @@ export const postUser = (user) => {
     try {
       const resC = await axios.post('https://reqres.in/api/users', user) //create
       const dataC = await resC.data
+      console.log('dataC: ', dataC)
       dispatch( createUser( [dataC] ) )
 
     } catch (e) {
@@ -132,4 +159,38 @@ export const postUser = (user) => {
   }
 }
 
+export const setCurrentPage = (pageNum) => {
+  return {
+    type: SET_CURRENT_PAGE,
+    payload: pageNum
+  }
+}
+
+export const setCountPages = (countPage) => {
+  return {
+    type: SET_COUNT_PAGES,
+    payload: countPage
+  }
+}
+
+export const setPerPage = (countPage) => {
+  return {
+    type: SET_PER_PAGE,
+    payload: countPage
+  }
+}
+
+export const searchUsers = (page) => {
+  return async (dispatch, getState) => {
+    try {
+
+      const { pages } = getState()
+      const res = await axios.get(`https://reqres.in/api/users?page=${page}&per_page=${pages.page.perPage}`)
+
+      const result = await res.data
+      return result
+
+    } catch (e){}
+  }
+}
 
